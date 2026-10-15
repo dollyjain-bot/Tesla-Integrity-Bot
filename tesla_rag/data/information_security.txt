@@ -1,0 +1,156 @@
+=== SYNTHETIC DEMONSTRATION DOCUMENT - NOT A REAL CORPORATE POLICY ===
+=== TESLA INFORMATION SECURITY & ACCESS CONTROL CODE ===
+Document ID: TSLA-ETH-2026-05
+Policy Title: Enterprise Information Security, AI Model Access & Credential Governance Policy
+Effective Date: May 10, 2026
+Classification: CONFIDENTIAL - DEMO ALL EMPLOYEES & CONTRACTORS
+Version: 4.8
+Approved By: Chief Information Security Officer & Cyber Risk Executive Committee
+
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+1.0 OVERVIEW AND INFORMATION SECURITY MISSION
+2.0 DEFINITIONS AND CYBERSECURITY TERMINOLOGY
+3.0 IDENTITY, AUTHENTICATION AND CREDENTIAL GOVERNANCE
+    3.1 Multi-Factor Authentication (MFA) & SSO Mandates (Section 8.1)
+    3.2 Hardware Security Key Requirements (FIDO2 / YubiKey)
+    3.3 Password Complexity Standards & Zero Credential Sharing
+    3.4 SSH Key Management & Hardcoding Restrictions
+4.0 ENTERPRISE AI MODEL SECURITY & VECTOR STORE ACCESS CONTROLS
+    4.1 Role-Based Access Control (RBAC) for RAG Engines (Section 8.2)
+    4.2 Prohibition of Unauthorized Shadow AI Tools
+    4.3 Vector Store Access Token Lifecycle & Scoping Rules
+    4.4 Code Base Security & AI Code Assistant Boundaries
+5.0 ENDPOINT PROTECTION, STORAGE ENCRYPTION & BYOD MANDATES
+    5.1 Full-Disk Encryption (BitLocker / FileVault)
+    5.2 Mobile Device Management (MDM) Enrolment
+6.0 NETWORK PERIMETER, CLOUD ENCLAVES & API KEY GOVERNANCE
+    6.1 90-Day Automated API Key Rotation SLA
+    6.2 Zero-Trust Cloud Enclave Network Micro-Segmentation
+7.0 EMPLOYEE SECURITY TRAINING & PHISHING SIMULATION PROTOCOLS
+8.0 PERMISSIBLE EXCEPTIONS AND RISK WAIVER WORKFLOW (ISRB)
+9.0 INCIDENT RESPONSE, SECURITY BREACH REPORTING & CONTAINMENT
+10.0 ILLUSTRATIVE SCENARIOS AND SECURITY COMPLIANCE EXAMPLES
+
+--------------------------------------------------------------------------------
+1.0 OVERVIEW AND INFORMATION SECURITY MISSION
+--------------------------------------------------------------------------------
+1.1 Mission:
+Tesla, Inc. ("Tesla") designs, builds, and deploys some of the world's most advanced autonomous edge computing systems, proprietary manufacturing networks, custom silicon architectures, and enterprise AI engines. Protecting Tesla’s digital infrastructure, source code repositories, telemetry stores, and RAG database vector stores against unauthorized access, cyber espionage, data exfiltration, and operational disruption is vital to national security, consumer safety, and corporate survival.
+
+1.2 Scope:
+This Policy applies to all Tesla employees, third-party software vendors, cloud architecture contractors, systems administrators, and machine learning researchers accessing Tesla internal networks, cloud environments, or enterprise applications globally.
+
+1.3 Non-Real Policy Disclaimer:
+THIS DOCUMENT IS A SYNTHETIC DEMONSTRATION ARTIFACT CREATED FOR PORTFOLIO AND ACADEMIC RAG BENCHMARKING PURPOSES. IT DOES NOT REPRESENT ACTUAL INTERNAL POLICIES OR PROPRIETARY DATA OF TESLA, INC.
+
+--------------------------------------------------------------------------------
+2.0 DEFINITIONS AND CYBERSECURITY TERMINOLOGY
+--------------------------------------------------------------------------------
+2.1 Multi-Factor Authentication (MFA):
+An authentication method requiring a user to provide two or more verification factors to gain access to a resource (e.g., password + hardware FIDO2 security token).
+
+2.2 Role-Based Access Control (RBAC):
+A security model that restricts system access to authorized users based on their verified organizational role, job responsibilities, and security clearance level.
+
+2.3 Shadow AI:
+The use of unauthorized, unsanctioned, or external third-party artificial intelligence tools, chatbots, or LLM API services for business purposes without approval from the Information Security Review Board.
+
+2.4 Vector Store Access Token:
+A cryptographically signed JSON Web Token (JWT) or API secret key required to query Tesla internal RAG vector databases (e.g., ChromaDB, Qdrant cluster enclaves) containing embedded corporate policies or proprietary research.
+
+2.5 Hardcoded Credentials:
+Plaintext insertion of passwords, API keys, private SSH keys, or database connection strings directly into software source code files, configuration scripts, or public git commits.
+
+--------------------------------------------------------------------------------
+3.0 IDENTITY, AUTHENTICATION AND CREDENTIAL GOVERNANCE
+--------------------------------------------------------------------------------
+Section 3.1 - Credential Security & Multi-Factor Authentication (Section 8.1 Mandate):
+All Tesla Personnel must enforce multi-factor authentication (MFA) across all internal single sign-on (SSO) portals, VPN gateways, and cloud administration panels.
+(a) Hardware Security Keys Required: Employees in engineering, IT infrastructure, finance, and AI research roles must use FIDO2 hardware security keys (e.g., YubiKey) as their mandatory secondary authentication factor. SMS-based 2FA is prohibited for high-privilege accounts due to SIM-swapping vulnerabilities.
+(b) Password Complexity Rules: Passphrases must be a minimum of 16 characters in length, containing uppercase letters, lowercase letters, numbers, and special symbols. Passphrases must be rotated every 180 days.
+(c) Zero Credential Sharing: Sharing SSO credentials, passwords, or hardware tokens with colleagues, contractors, or administrative assistants is strictly forbidden under all circumstances.
+
+Section 3.2 - Hardcoding Restrictions & Secrets Detection:
+Inserting plaintext passwords, API keys, AWS credentials, or SSH private keys directly into code repositories (GitLab, GitHub) is cause for immediate credential revocation and disciplinary audit. Automated secret-scanning hooks execute on every git commit; commits containing detected secrets are blocked instantly.
+
+--------------------------------------------------------------------------------
+4.0 ENTERPRISE AI MODEL SECURITY & VECTOR STORE ACCESS CONTROLS
+--------------------------------------------------------------------------------
+Section 4.1 - Role-Based Access Control (RBAC) for RAG Engines (Section 8.2 Mandate):
+Access to internal RAG models, compliance search engines, and enterprise vector databases requires strict role-based authentication.
+(a) Token Validation: API endpoints serving RAG responses (e.g., FastAPI or Streamlit backends) must validate bearer tokens and restrict vector memory chunks according to user role permissions.
+(b) Clearance Scoping:
+  - Role `Standard Employee`: May query public policies and general HR guidelines.
+  - Role `Ethics Auditor`: May query confidential ethics codes and compliance investigation summaries.
+  - Role `Executive Security`: May query restricted vehicle secrecy and unannounced product build specs.
+
+Section 4.2 - Prohibition of Unauthorized Shadow AI Tools:
+Employees are strictly prohibited from copying company source code, internal policy documents, vehicle CAD files, or customer telemetry into commercial, unvetted external AI tools or public web chatbots (e.g., free ChatGPT, public Claude, unapproved online code converters). All AI-assisted development must utilize approved internal Tesla AI instances (e.g., Tesla internal coding copilot hosted on local cluster enclaves).
+
+Section 4.3 - Vector Store Access Token Lifecycle:
+Vector database access tokens must be ephemeral, scoped to specific user sessions, and expire after 8 hours. Hardcoding static vector database tokens in client-side Streamlit apps or front-end JavaScript bundles is strictly forbidden.
+
+--------------------------------------------------------------------------------
+5.0 ENDPOINT PROTECTION, STORAGE ENCRYPTION & BYOD MANDATES
+--------------------------------------------------------------------------------
+5.1 Full-Disk Encryption Requirements:
+All company laptops, workstations, mobile test rigs, and portable storage drives must feature active full-disk encryption (BitLocker with XTS-AES-256 on Windows; FileVault on macOS). Unencrypted laptops are automatically blocked from connecting to Tesla internal Wi-Fi networks.
+
+5.2 Mobile Device Management (MDM) Enrollment:
+Any smartphone or tablet accessing Tesla corporate email, Slack, or internal portals must be enrolled in Tesla Enterprise MDM. MDM enables remote wipe capabilities in the event of device loss or theft.
+
+--------------------------------------------------------------------------------
+6.0 NETWORK PERIMETER, CLOUD ENCLAVES & API KEY GOVERNANCE
+--------------------------------------------------------------------------------
+6.1 90-Day Automated API Key Rotation SLA:
+All service-to-service API keys, database connection secrets, and vector store master tokens must be rotated automatically every 90 calendar days via the Tesla Vault Secrets Management Engine. API keys older than 90 days are automatically revoked.
+
+6.2 Zero-Trust Micro-Segmentation:
+Production AI compute clusters (Dojo, GPU training clusters) are segregated from general corporate office networks. Direct SSH access to production GPU nodes requires jumping through secure bastion hosts with multi-person authorization.
+
+--------------------------------------------------------------------------------
+7.0 EMPLOYEE SECURITY TRAINING & PHISHING SIMULATION PROTOCOLS
+--------------------------------------------------------------------------------
+Employees must complete quarterly cybersecurity refresher training. Tesla Information Security conducts unannounced simulated phishing tests. Employees who fail three consecutive phishing simulations are required to attend mandatory in-person security remediation training and temporarily forfeit remote network access.
+
+--------------------------------------------------------------------------------
+8.0 PERMISSIBLE EXCEPTIONS AND RISK WAIVER WORKFLOW (ISRB)
+--------------------------------------------------------------------------------
+8.1 Information Security Review Board (ISRB) Approval:
+Temporary waivers for specific security controls (e.g., extending an API key lifecycle for legacy test hardware) must be formally submitted to the ISRB.
+Requirements:
+1. Formal Risk Assessment Form TSLA-SEC-R1;
+2. Proposed compensating security controls (e.g., IP whitelisting);
+3. Joint sign-off by CISO and Department VP.
+Waivers expire automatically after 30 business days unless explicitly renewed.
+
+--------------------------------------------------------------------------------
+9.0 INCIDENT RESPONSE, SECURITY BREACH REPORTING & CONTAINMENT
+--------------------------------------------------------------------------------
+9.1 Reporting Mandatory Within 1 Hour:
+Any employee who suspects a credential compromise, lost encrypted laptop, rogue vector store query activity, or unauthorized API token leak must report the incident to Security Operations Center (SOC) at `soc@tesla.internal` or hotline 1-800-TSLA-SOC within 1 hour.
+
+9.2 Automated Containment Protocols:
+Upon receiving a credential leak alert, SOC automated playbooks immediately revoke the compromised SSO user session, rotate associated API tokens, and isolate affected endpoints from the network.
+
+--------------------------------------------------------------------------------
+10.0 ILLUSTRATIVE SCENARIOS AND SECURITY COMPLIANCE EXAMPLES
+--------------------------------------------------------------------------------
+Case Study 1: Hardcoding Vector Store Tokens in a Public App
+Scenario: Kevin, a frontend developer building an internal prototype search dashboard, hardcodes the production ChromaDB master API key directly in a public GitHub repository.
+Analysis: Kevin has violated Section 3.2 (Secrets Detection) and Section 4.3 (Vector Store Access Token Lifecycle).
+Correct Action: Automated secret scanners detect the token within 45 seconds of push. SOC revokes the key, invalidates active sessions, and Kevin receives a severe security reprimand.
+
+Case Study 2: Using Public ChatGPT for Code Optimization
+Scenario: Priya, a data engineer, copies 1,500 lines of proprietary battery optimization Python code into a public web chatbot to debug a performance bottleneck.
+Analysis: Priya has breached Section 4.2 (Prohibition of Unauthorized Shadow AI Tools) by exfiltrating proprietary code to an unvetted third-party server.
+Correct Action: Priya's internet access is temporarily restricted, the incident is logged with ISRB, and she is required to complete mandatory AI security retraining.
+
+Case Study 3: Bypassing MFA with SMS Fallback
+Scenario: Tom, an IT administrator, attempts to disable hardware security key requirements on his account so he can log in via SMS text message while traveling without his YubiKey.
+Analysis: Disabling hardware security keys violates Section 3.1 (Hardware Security Key Requirements).
+Correct Action: SSO security policies automatically block the override request, requiring Tom to contact SOC to obtain an emergency temporary access pass.
+
+=== END OF SYNTHETIC DOCUMENT TSLA-ETH-2026-05 ===

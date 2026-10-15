@@ -1,0 +1,214 @@
+=== SYNTHETIC DEMONSTRATION DOCUMENT - NOT A REAL CORPORATE POLICY ===
+=== TESLA ENTERPRISE CODE OF ETHICS AND PROFESSIONAL CONDUCT ===
+Document ID: TSLA-ETH-2026-01
+Policy Title: Global Enterprise Ethics, Professional Integrity & Conflict of Interest Policy
+Effective Date: May 10, 2026
+Classification: CONFIDENTIAL - DEMO FOR ALL EMPLOYEES & CONTRACTORS
+Version: 4.2
+Approved By: Tesla Safety Integrity & Ethics Board
+
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+1.0 PURPOSE AND GLOBAL SCOPE
+2.0 CORE ETHICAL PRINCIPLES AND CODE STANDARDS
+3.0 DEFINITIONS AND TERMINOLOGY
+4.0 CONFLICTS OF INTEREST AND EXTERNAL ENGAGEMENTS
+    4.1 Outside Employment and Side Businesses
+    4.2 Board Memberships and Advisory Roles
+    4.3 Personal Financial Investments and Stock Ownership
+    4.4 Related Party Transactions and Hiring Relatives
+5.0 ANTI-BRIBERY, CORRUPTION, AND GIFTS/GRATUITIES POLICY
+    5.1 Foreign Corrupt Practices Act (FCPA) Compliance
+    5.2 De Minimis Gift Value Threshold ($50.00 USD Limit)
+    5.3 Entertainment, Travel, and Hospitality Guidelines
+    5.4 Interactions with Government Officials and Regulatory Inspectors
+6.0 FAIR DEALING, COMPETITIVE INTELLIGENCE & TRADE SECRETS
+    6.1 Lawful Competitive Intelligence Gathering
+    6.2 Prohibition of Reverse Engineering Competitor Parts Unlawfully
+    6.3 Recruitment of Competitor Personnel and Trade Secret Safeguards
+7.0 EMPLOYEE RESPONSIBILITIES AND ANNUAL CERTIFICATION
+8.0 PERMISSIBLE EXCEPTIONS AND ETHICS WAIVER WORKFLOW
+9.0 REPORTING PROCEDURES AND PROGRESSIVE DISCIPLINARY MATRIX
+10.0 ILLUSTRATIVE OPERATIONAL EXAMPLES AND CASE STUDIES
+
+--------------------------------------------------------------------------------
+1.0 PURPOSE AND GLOBAL SCOPE
+--------------------------------------------------------------------------------
+1.1 Purpose:
+Tesla, Inc. and its subsidiaries (collectively "Tesla" or the "Company") operate in a complex, fast-paced global market spanning electric vehicle manufacturing, energy storage systems, autonomous driving software, and humanoid robotics. The purpose of this Code of Ethics and Professional Conduct ("Policy") is to establish clear, unyielding standards of business conduct, ethical decision-making, legal compliance, and personal integrity for everyone working on behalf of Tesla.
+
+1.2 Scope:
+This Policy applies universally to all full-time employees, part-time employees, executive officers, members of the Board of Directors, temporary workers, intern candidates, third-party contractors, and vendors (collectively referred to as "Tesla Personnel") across all global locations, including Gigafactories, research centers, service hubs, and remote working environments.
+
+1.3 Non-Real Policy Disclaimer:
+THIS DOCUMENT IS A SYNTHETIC DEMONSTRATION ARTIFACT CREATED FOR PORTFOLIO AND ACADEMIC RAG BENCHMARKING PURPOSES. IT DOES NOT REPRESENT ACTUAL INTERNAL POLICIES OR PROPRIETARY DATA OF TESLA, INC.
+
+--------------------------------------------------------------------------------
+2.0 CORE ETHICAL PRINCIPLES AND CODE STANDARDS
+--------------------------------------------------------------------------------
+Tesla Personnel must adhere to five fundamental ethical pillars in every operational interaction:
+
+2.1 Uncompromising Integrity:
+Act honestly and transparently in all communications, accounting records, public statements, and internal reports. Never sacrifice safety, legal compliance, or truthfulness for short-term production velocity or financial metrics.
+
+2.2 Respect and Fair Treatment:
+Maintain a professional work environment free from harassment, unlawful discrimination, intimidation, and retaliation. Tesla evaluates team members solely on merit, technical performance, ethical execution, and contributions to the company's mission.
+
+2.3 Protection of Assets and Innovation:
+Safeguard Tesla's physical properties, intellectual property, financial resources, pre-production software algorithms, and confidential data against theft, waste, unauthorized access, and misuse.
+
+2.4 Environmental and Product Safety:
+Ensure that vehicle manufacturing processes, battery cell chemistry validation, solar installations, and automated driving software meet or exceed applicable global safety regulations and environmental standards.
+
+2.5 Regulatory Transparency:
+Cooperate truthfully and fully with internal auditors, external safety inspectors, environmental regulators, and legal authorities. Concealing operational failures or falsifying test metrics is cause for summary termination.
+
+--------------------------------------------------------------------------------
+3.0 DEFINITIONS AND TERMINOLOGY
+--------------------------------------------------------------------------------
+For the purpose of this Policy, the following definitions apply strictly:
+
+3.1 Conflict of Interest:
+Any situation in which a Tesla Personnel's personal, financial, family, or external professional interests interfere, appear to interfere, or potentially conflict with the best interests of Tesla, or impair their ability to perform their job duties objectively and impartially.
+
+3.2 Gift or Gratuity:
+Any item of value, favor, discount, entertainment ticket, meal, travel accommodation, cash, gift card, loan, or hospitality provided directly or indirectly to a Tesla employee or their immediate family member by a supplier, vendor, contractor, customer, or competitor.
+
+3.3 De Minimis Threshold:
+The maximum cumulative monetary value ($50.00 USD or local currency equivalent per calendar year) of promotional items or modest business meals that an employee may accept without prior written authorization from the Ethics Integrity Board.
+
+3.4 Related Party:
+Spouses, domestic partners, parents, children, siblings, in-laws, step-relatives, or any household member of a Tesla employee, as well as any business enterprise owned or controlled by such individuals.
+
+3.5 Foreign Official:
+Any officer, employee, or representative of a foreign government, state-owned enterprise (e.g., state utility provider), public international organization, political party, or candidate for political office.
+
+3.6 Corporate Opportunity:
+Any business investment, land acquisition, patent discovery, or commercial partnership discovered through the use of Tesla property, internal data, or professional position that falls within Tesla’s current or prospective business roadmap.
+
+--------------------------------------------------------------------------------
+4.0 CONFLICTS OF INTEREST AND EXTERNAL ENGAGEMENTS
+--------------------------------------------------------------------------------
+Section 4.1 - Outside Employment and Side Businesses:
+Employees are strictly prohibited from engaging in outside employment, freelancing, or operating personal businesses that:
+(a) Compete directly or indirectly with Tesla products, energy storage solutions, or AI software services;
+(b) Involve the use of Tesla tools, software licenses, proprietary datasets, or working hours;
+(c) Create physical or mental fatigue that impairs job performance or factory floor safety.
+All secondary employment must be disclosed prior to commencement via the internal compliance portal at compliance.tesla.com and requires written approval from both the employee's Vice President and the Ethics Integrity Board.
+
+Section 4.2 - Board Memberships and Advisory Roles:
+Serving on the board of directors, advisory board, or technical committee of any commercial enterprise—whether for-profit or non-profit—requires advance clearance. Board service for direct automotive competitors, battery suppliers, or raw lithium mining partners is strictly prohibited under all circumstances.
+
+Section 4.3 - Personal Financial Investments and Stock Ownership:
+Tesla Personnel may not hold a direct financial interest (defined as holding more than 1% of total equity or debt securities) in any entity that is a current Tesla supplier, contractor, distributor, or direct competitor, unless such security is held through a broad-based, index-tracked mutual fund or ETF where the employee exercises no individual portfolio selection.
+
+Section 4.4 - Related Party Transactions and Hiring Relatives:
+Tesla Personnel may not participate in, influence, or approve vendor selection, contract negotiation, or purchasing decisions involving a Related Party. Furthermore, employees may not directly or indirectly supervise a Related Party. Any potential Related Party hiring or contract award must be disclosed immediately to HR Compliance.
+
+--------------------------------------------------------------------------------
+5.0 ANTI-BRIBERY, CORRUPTION, AND GIFTS/GRATUITIES POLICY
+--------------------------------------------------------------------------------
+Section 5.1 - Foreign Corrupt Practices Act (FCPA) & Global Anti-Bribery Compliance:
+Tesla maintains a absolute zero-tolerance policy for bribery, kickbacks, and corrupt payments. No Tesla employee or third-party agent acting on Tesla’s behalf may directly or indirectly promise, offer, give, or authorize any payment, gift, or item of value to any Foreign Official or private party to obtain or retain business, secure a favorable regulatory ruling, or expedite permit approvals (so-called "facilitation payments").
+
+Section 5.2 - De Minimis Gift Value Threshold ($50.00 USD Limit):
+(a) Employees may accept unsolicited promotional items of token value (e.g., branded pens, notebooks, coffee mugs) valued under $50.00 USD.
+(b) Accepting cash, gift cards, pre-paid debit cards, cryptocurrency, or negotiable financial instruments of ANY amount is strictly prohibited.
+(c) Cumulative gifts from a single supplier or vendor exceeding $50.00 USD within a 12-month period must be declined or surrendered immediately to Tesla Corporate Human Resources for audit recording and charitable auction or disposal.
+
+Section 5.3 - Entertainment, Travel, and Hospitality Guidelines:
+Business meals and local entertainment hosted by third parties are permissible ONLY IF:
+- The host is present;
+- The primary purpose is genuine business discussion;
+- The cost is reasonable, customary, and not lavish (under $100.00 USD per person);
+- The event does not coincide with active contract negotiations or RFP bidding cycles.
+All travel, hotel accommodations, and luxury event invitations paid for by vendors must receive prior written authorization from the Ethics Integrity Committee.
+
+Section 5.4 - Interactions with Government Officials and Regulatory Inspectors:
+Special care must be taken during interactions with government regulators, environmental inspectors, factory safety auditors, and customs officials. Meals, travel reimbursements, or gifts provided to government personnel are strictly illegal in many jurisdictions and require advance legal review by the Tesla Legal Department.
+
+--------------------------------------------------------------------------------
+6.0 FAIR DEALING, COMPETITIVE INTELLIGENCE & TRADE SECRETS
+--------------------------------------------------------------------------------
+Section 6.1 - Lawful Competitive Intelligence Gathering:
+Tesla competes vigorously and fairly. Employees gathering market intelligence regarding automotive competitors, battery benchmarks, or autonomous driving capabilities must rely exclusively on publicly available information, published academic research, public filings, and reverse engineering conducted on legally purchased off-the-shelf commercial vehicles.
+
+Section 6.2 - Prohibition of Reverse Engineering Competitor Parts Unlawfully:
+Obtaining competitor hardware, CAD models, or proprietary software source code through misrepresentation, breach of NDA, wiretapping, theft, or unauthorized digital intrusion is strictly illegal. Using stolen competitor blueprints or software code in Tesla vehicle design is cause for immediate termination and criminal referral.
+
+Section 6.3 - Recruitment of Competitor Personnel and Trade Secret Safeguards:
+When recruiting talent from automotive or tech competitors, hiring managers must explicitly instruct candidates during interviews NOT to bring, disclose, or utilize confidential files, trade secret documents, CAD drawings, or customer lists from their former employers. Newly onboarded employees must sign a formal declaration confirming they have surrendered all previous employer data.
+
+--------------------------------------------------------------------------------
+7.0 EMPLOYEE RESPONSIBILITIES AND ANNUAL CERTIFICATION
+--------------------------------------------------------------------------------
+7.1 Mandatory Training:
+All Tesla Personnel must complete the annual Corporate Ethics and Anti-Corruption Training Module within 30 calendar days of assignment.
+
+7.2 Annual Written Disclosure:
+Every employee at manager level and above must complete an annual Conflict of Interest Disclosure Statement, confirming full compliance with this Policy and disclosing any potential financial, personal, or outside business relationships.
+
+7.3 Duty to Safeguard Records:
+Employees responsible for financial reporting, factory build telemetry, accounting entries, or safety test logs must ensure complete accuracy. Falsifying timesheets, production quotas, emission certificates, or safety validation logs is a severe violation of federal law and Tesla policy.
+
+--------------------------------------------------------------------------------
+8.0 PERMISSIBLE EXCEPTIONS AND ETHICS WAIVER WORKFLOW
+--------------------------------------------------------------------------------
+8.1 Policy Waivers:
+Exceptions or waivers to any provision of this Code are granted only under extraordinary circumstances. Waivers for executive officers or directors may be granted solely by the Audit Committee of the Board of Directors and must be disclosed publicly as required by applicable stock exchange regulations.
+
+8.2 Application Workflow for Exception:
+1. Employee submits a formal Exception Request via compliance.tesla.com at least 14 business days prior to the proposed event/transaction.
+2. The request must detail the rationale, financial amounts involved, third parties, and proposed risk mitigation steps.
+3. The Ethics Integrity Committee reviews the application against legal standards and issues a formal written Approval, Conditional Approval, or Rejection.
+4. Verbal approvals are completely invalid and non-binding.
+
+--------------------------------------------------------------------------------
+9.0 REPORTING PROCEDURES AND PROGRESSIVE DISCIPLINARY MATRIX
+--------------------------------------------------------------------------------
+9.1 Reporting Duty:
+Any Tesla Personnel who observes, suspects, or becomes aware of an ethics violation, bribery attempt, financial fraud, safety falsification, or conflict of interest has an affirmative duty to report it immediately.
+
+9.2 Reporting Channels:
+- Direct Supervisor or Department Head;
+- Internal Compliance Portal: compliance.tesla.com;
+- 24/7 Confidential Ethics Hotline: 1-800-TSLA-ETHICS (1-800-875-2384);
+- Email: ethics@compliance-demo.tesla.internal;
+- Confidential Ombudsman Mailbox: P.O. Box 2026, Austin, TX 78725.
+
+9.3 Progressive Disciplinary Matrix:
+Violations of this Policy are evaluated by HR and Legal, resulting in disciplinary actions calibrated to severity:
+
++----------------------+--------------------------------------------------+-----------------------------------------+
+| Violation Severity   | Qualifying Conduct Examples                      | Disciplinary Sanction                   |
++----------------------+--------------------------------------------------+-----------------------------------------+
+| Minor Violation      | Unintentional failure to disclose gift <$100;    | Written warning; mandatory re-training; |
+|                      | late annual ethics certification filing.          | formal note in personnel file.          |
++----------------------+--------------------------------------------------+-----------------------------------------+
+| Moderate Violation   | Failure to disclose secondary employment;        | Formal reprimand; forfeiture of annual  |
+|                      | accepting vendor dinner during active RFP.       | bonus; temporary suspension (1-2 weeks).|
++----------------------+--------------------------------------------------+-----------------------------------------+
+| Severe Violation     | Active conflict of interest; accepting bribes;   | Immediate summary termination; clawback |
+|                      | falsifying safety test data; stolen trade secret.| of stock options; legal referral.       |
++----------------------+--------------------------------------------------+-----------------------------------------+
+
+--------------------------------------------------------------------------------
+10.0 ILLUSTRATIVE OPERATIONAL EXAMPLES AND CASE STUDIES
+--------------------------------------------------------------------------------
+Case Study 1: The Vendor Dinner Request
+Scenario: Marcus, a procurement manager in Fremont Gigafactory, is evaluating two competing battery cell enclosure suppliers. Supplier A offers to take Marcus and his family to an exclusive steakhouse ($400 total bill) during the final week of bidding.
+Analysis: Accepting this dinner violates Section 5.3 (Entertainment Guidelines during RFP) and exceeds the $100 per person threshold.
+Correct Action: Marcus must decline the invitation, inform the supplier of Tesla's policy, and notify the Ethics Integrity Board.
+
+Case Study 2: Personal Stock Investment in Raw Materials Supplier
+Scenario: Elena, a senior battery supply chain analyst, learns during internal meetings that Tesla plans to sign a massive nickel supply agreement with LithiumCorp. Elena buys $15,000 worth of LithiumCorp stock from her personal brokerage account before the public announcement.
+Analysis: Elena has engaged in illegal insider trading and breached Section 4.3 (Financial Investments) and Section 3.6 (Corporate Opportunity).
+Correct Action: Elena is subject to immediate termination, forfeit of equity grants, and SEC criminal referral.
+
+Case Study 3: Recruiter Hiring from Competitor
+Scenario: David, an engineering manager in Autonomous Driving, hires a senior software engineer from a competing self-driving startup. During onboarding, the new engineer offers David a USB drive containing proprietary lidar perception software from their former employer.
+Analysis: Utilizing this data violates Section 6.3 (Recruitment and Trade Secrets) and exposes Tesla to massive legal liability.
+Correct Action: David must immediately refuse the USB drive, isolate the hardware, notify Tesla Legal, and ensure the code is never connected to Tesla networks.
+
+=== END OF SYNTHETIC DOCUMENT TSLA-ETH-2026-01 ===

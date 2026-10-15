@@ -1,0 +1,36 @@
+# Environment variables & API keys (CRITICAL - DO NOT COMMIT)
+.env
+*.env
+.env.local
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Persistent Vector Store (ChromaDB auto-builds on first run)
+vector_store/
+
+# Microsoft Office temporary lock files (PowerPoint, Excel, Word)
+~$*
+*.tmp
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
