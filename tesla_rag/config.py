@@ -24,7 +24,7 @@ class RAGConfig:
 
     # Generation defaults
     temperature: float = 0.0
-    top_p: float = 1.0
+    top_p: float = 0.1
 
     # File and directory paths
     data_dir: Path = Path("data")

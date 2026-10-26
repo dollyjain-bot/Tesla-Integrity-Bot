@@ -19,6 +19,7 @@ The system is engineered to solve a critical enterprise problem: **eliminating h
 * **Two-Stage Quality Gate:** Combines top-$K$ nearest-neighbor retrieval with a hard **0.35 cosine similarity cutoff**, discarding weak or irrelevant matches before prompt generation.
 * **Verifiable Provenance & Citation Badges:** Every claim links to an official Document ID (`TSLA-ETH-2026-XX`) and section.
 * **Interactive Source Inspector:** Streamlit expander reveals verbatim retrieved chunks, metadata tags, and exact cosine similarity scores.
+* **LangChain RAG Pipeline:** Embeddings (`HuggingFaceEmbeddings`), vector store (`langchain_chroma.Chroma`), a custom `ThresholdRetriever` (`BaseRetriever`), `ChatPromptTemplate`, `ChatGroq` and a runnable chain, all behind the original `RAGEngine.answer_query()` interface.
 * **Multi-Model Failover Ladder:** Primary inference on `openai/gpt-oss-120b` via Groq LPUs, with automated fallback retries across `openai/gpt-oss-20b` and `qwen/qwen3.8-27b`.
 * **Automated Empirical Benchmarking:** Built-in evaluation harness testing 15 compliance questions across single-doc, multi-doc, and unanswerable edge cases.
 
@@ -40,23 +41,27 @@ tesla_rag/
 │
 ├── models/                   # Embedding & generation models
 │   ├── __init__.py
-│   ├── embeddings.py         # EmbeddingManager: sentence-transformers/all-MiniLM-L6-v2
-│   └── generator.py          # GroqGenerator: Groq Cloud API, persona prompt & fallbacks
+│   ├── embeddings.py         # EmbeddingManager: LangChain HuggingFaceEmbeddings (all-MiniLM-L6-v2), lazy-loaded
+│   └── generator.py          # GroqGenerator: ChatPromptTemplate | ChatGroq | StrOutputParser, persona prompt & fallbacks
 │
 ├── storage/                  # Vector database layer
 │   ├── __init__.py
-│   └── vector_store.py       # VectorStore: persistent ChromaDB client (cosine space)
+│   └── vector_store.py       # VectorStore: langchain_chroma.Chroma on a persistent ChromaDB client (cosine space)
 │
 ├── core/                     # Core orchestrator
 │   ├── __init__.py
-│   └── engine.py             # RAGEngine: end-to-end pipeline & similarity threshold filter
+│   ├── retriever.py          # ThresholdRetriever (LangChain BaseRetriever): Top-K search + similarity cut-off
+│   └── engine.py             # RAGEngine: LangChain chain retriever -> generator
+│
+├── tests/                    # unittest suite (offline: no Groq calls, never touches the real vector_store/)
 │
 ├── rag_engine.py             # Backwards-compatible facade re-exporting core modules
 ├── db.py                     # Backwards-compatible facade re-exporting VectorStore
 ├── streamlit_app.py          # Streamlit web frontend with dark theme & mock auth
 │
 ├── benchmark.py              # Automated 15-question evaluation suite (Config A vs B)
-├── benchmark_results.csv     # Recorded empirical benchmark execution outputs
+├── benchmark_results.csv     # Recorded benchmark outputs of the original (pre-LangChain) implementation
+├── benchmark_results_langchain.csv  # Benchmark outputs of the LangChain implementation (same 15 questions)
 │
 ├── data/                     # Ingested synthetic policy corpus
 │   ├── corporate_ethics.txt       # TSLA-ETH-2026-01: Gifts, bribery, conflict of interest
@@ -77,12 +82,14 @@ tesla_rag/
 | :--- | :--- | :--- |
 | **Generation Model (LLM)** | `openai/gpt-oss-120b` | High-reasoning 120B parameter model hosted on Groq LPUs. |
 | **LLM Failover Ladder** | `gpt-oss-120b` $\rightarrow$ `gpt-oss-20b` $\rightarrow$ `qwen3.8-27b` | Automated sequential retry if primary model returns 404/decommission. |
-| **Embedding Model** | `all-MiniLM-L6-v2` (`sentence-transformers`) | Dense 384-dimensional vector embeddings, local CPU inference. |
-| **Vector Database** | **ChromaDB** (`PersistentClient`) | On-disk persistence (`./vector_store`), collection `tesla_compliance_policies`. |
+| **Embedding Model** | `all-MiniLM-L6-v2` via LangChain `HuggingFaceEmbeddings` | Dense 384-dimensional vector embeddings, local CPU inference. |
+| **Vector Database** | **ChromaDB** via LangChain `langchain_chroma.Chroma` | On-disk persistence (`./vector_store`), collection `tesla_compliance_policies`. |
+| **Retriever** | `ThresholdRetriever` (LangChain `BaseRetriever`) | Top-K search, then drops chunks below the similarity threshold. Returns LangChain `Document`s. |
+| **Prompting & LLM client** | `ChatPromptTemplate` + `ChatGroq` (`langchain-groq`) | Prompt text unchanged; temperature and Top-P are bound per call. |
 | **HNSW Distance Space** | **Cosine Similarity** (`{"hnsw:space": "cosine"}`) | Evaluates similarity score: $S = \max(0, \min(1, 1 - d))$. |
 | **Chunking Configuration** | **500 characters** window, **100 characters** overlap | Recursive splitting on `["\n\n", "\n", ". ", "? ", "! ", " ", ""]`. |
 | **Retrieval Strategy** | Dense top-$K$ with hard threshold cutoff | Default **`top_k = 3`** (UI adjustable 1–5), **`similarity_threshold = 0.35`**. |
-| **Decoding Parameters** | `temperature = 0.0`, `top_p = 1.0` | Deterministic greedy decoding for zero-extrapolation compliance. |
+| **Decoding Parameters** | `temperature = 0.0`, `top_p = 0.1` | Default for the engine, config and UI sliders. Temperature 0.0 is sent to Groq exactly (not `ChatGroq`'s 1e-08 substitution). |
 | **Web UI Framework** | **Streamlit** (Custom Tesla Dark Theme) | Custom CSS (`#0E1117`, red `#E82127`), mock login gate, chunk inspector. |
 
 ---
@@ -120,6 +127,21 @@ Recorded execution data from [`benchmark_results.csv`](file:///c:/Users/Bot/rag/
 
 > **Key Finding:** On the 4 out-of-scope questions (e.g., ergonomic chair stipends, 2027 delivery targets, pet insurance), **Config A had a 0.0% hallucination rate** (correctly declined all 4). In contrast, Config B hallucinated 100% of the time on unanswerable queries, fabricating non-existent policies. This provides empirical proof that `temperature = 0.0` is essential for enterprise compliance.
 
+### Original vs LangChain implementation (same 15 questions, `top_k = 3`)
+
+Results of the LangChain implementation are in [`benchmark_results_langchain.csv`](benchmark_results_langchain.csv). The closest like-for-like baseline is the original code's re-run from 2026-10-14 (`deck_evidence/benchmark_rerun_2026-10-14.csv`). The table above comes from the older `benchmark_results.csv`, whose scores differ from that re-run, so it is not used for this comparison.
+
+| Metric | Original re-run, Config A | LangChain, Config A | Original re-run, Config B | LangChain, Config B |
+| :--- | :--- | :--- | :--- | :--- |
+| Average latency (s, network dependent) | 9.87 | 4.36 | 9.94 | 7.07 |
+| Retrieval accuracy | 100% | 100% | 100% | 100% |
+| Citation accuracy | 93% | 93% | 100% | 93% |
+| Answer correctness | 78.9% | 78.9% | 84.5% | 82.8% |
+| Groundedness | 94.0% | 94.0% | 94.0% | 94.0% |
+| Hallucination rate | 0.0% | 0.0% | 0.0% | 0.0% |
+
+Config A (the deterministic default) matches on every quality metric. Config B differs on 2 of 15 questions (Q1 and Q10), which is expected at temperature 0.8. Retrieved chunks and scores are identical to the original code (verified separately on a copy of the vector store). Latency depends on the Groq API and network, so it is not a like-for-like speed comparison.
+
 ---
 
 ## 🛠️ Installation & Setup
@@ -147,6 +169,7 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+> `langchain-groq` requires `groq<1.0.0`, so pip installs `groq` 0.37.x. Use a virtual environment so this does not affect other projects. Tested with Python 3.14.
 
 ### 4. Configure Environment Variables
 Create or edit your `.env` file in the `tesla_rag/` directory:
@@ -169,8 +192,8 @@ Launch the interactive Tesla-branded web application:
 streamlit run streamlit_app.py
 ```
 * **Local URL:** `http://localhost:8501`
-* **Mock Sign-In:** Enter any username (e.g., `admin@tesla.demo`) with password `demo123` to enter the audit console.
-* **Features:** Sidebar controls for Top-$K$ (1–5), Temperature (0.0–1.0), dynamic chat interface, citation badges, and expandable source chunk inspector.
+* **Mock Sign-In:** The form is pre-filled with `admin@tesla.demo` / `demo123`. Any non-empty username signs in; the password is **not validated**.
+* **Features:** Sidebar controls for Top-$K$ (1–5, default 3), Temperature (0.0–1.0, default 0.0) and Top-P (0.0–1.0, default 0.1), dynamic chat interface, citation badges, and expandable source chunk inspector.
 
 ### Option B: Test RAG Engine CLI
 Run an end-to-end question answering check in the terminal:
@@ -186,7 +209,13 @@ Execute the empirical evaluation suite across all 15 test questions:
 python benchmark.py
 ```
 * Evaluates Config A vs. Config B across latency, retrieval, citation, correctness, and hallucination.
-* Exports detailed per-query results to `benchmark_results.csv` and prints a summary comparison table.
+* Exports detailed per-query results to `benchmark_results.csv` and prints a summary comparison table. (This overwrites the recorded original results, so copy the file elsewhere first if you want to keep it.)
+
+### Option D: Run the Tests
+```bash
+python -m unittest discover -s tests -t .
+```
+* Offline suite covering chunking, the Chroma wrapper, prompts and request payloads, the retriever, the engine chain, embeddings and the Streamlit login/controls. It uses temporary directories, never the real `vector_store/`.
 
 ---
 
@@ -196,25 +225,27 @@ python benchmark.py
 [ User Query via Streamlit / CLI ]
                 │
                 ▼
-[ EmbeddingManager.embed_query() ] ──► (Generates 384-d vector via all-MiniLM-L6-v2)
+[ RAGEngine.answer_query() ]  ── LangChain chain: RunnablePassthrough.assign(documents=retrieve) | generate
                 │
                 ▼
-[ ChromaDB HNSW Cosine Search ] ────► (Retrieves Top-K candidate chunks)
+[ ThresholdRetriever (BaseRetriever) ]
+      ├─ HuggingFaceEmbeddings embeds the query (384-d, all-MiniLM-L6-v2)
+      ├─ langchain_chroma.Chroma cosine search ──► Top-K candidate chunks (score = 1 - distance)
+      └─ Similarity threshold filter ──► keeps only chunks with similarity >= 0.35
                 │
                 ▼
-[ Similarity Threshold Filter ] ────► (Retains only chunks with similarity >= 0.35)
+      LangChain Documents (id = chunk_id, metadata = source, document_id, section, scores)
                 │
-                ├──► [ If 0 chunks survive ] ──► Return: "The provided policy documents do not contain..."
-                │
-                ▼
-[ GroqGenerator Context Injection ]  ──► (Structures [Retrieved Context Chunk X] blocks)
+                ├──► [ If 0 chunks survive ] ──► Return: "The provided policy documents do not contain..." (LLM not called)
                 │
                 ▼
-[ Groq LPU: openai/gpt-oss-120b ]   ──► (Synthesizes answer citing Document ID & Section)
-                │
+[ GroqGenerator ]  ChatPromptTemplate | ChatGroq(openai/gpt-oss-120b, temperature, top_p) | StrOutputParser
+                │   (Structures [Retrieved Context Chunk X] blocks; cites Document ID & Section)
                 ▼
-[ Streamlit UI Output ]             ──► (Renders Markdown + Source Badges + Chunk Inspector)
+[ Streamlit UI Output ]  ──► Renders Markdown + Source Badges + Chunk Inspector
 ```
+
+**Parts that are intentionally not LangChain:** document loading and the 500/100 recursive chunker (LangChain's splitter produces different chunk boundaries, which would no longer match the stored vectors), the similarity score/threshold logic, citation badge building, and the model-fallback loop (it only retries on 404 / model-not-found errors).
 
 ---
 

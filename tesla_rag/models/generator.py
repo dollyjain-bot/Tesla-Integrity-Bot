@@ -1,12 +1,14 @@
 """
 Tesla Integrity Bot - LLM Generation Module
-Handles prompt formatting, Groq Cloud API execution, and zero-hallucination guardrails.
+Handles prompt formatting, Groq Cloud API execution (via LangChain), and zero-hallucination guardrails.
 """
 
 import os
 from typing import List, Dict, Any, Optional
 from dotenv import load_dotenv
-from groq import Groq
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_groq import ChatGroq
 
 
 class GroqGenerator:
@@ -28,6 +30,14 @@ Every factual claim must reference the source document and section.
 
 Do not use external knowledge."""
 
+    USER_PROMPT_TEMPLATE = (
+        "RETRIEVED CONTEXT:\n{context}\n\n"
+        "USER QUESTION:\n{question}\n\n"
+        "INSTRUCTIONS:\nProvide your final compliance audit answer strictly based on the context above. "
+        "Format your answer cleanly using Markdown (bold headings, bullet points, clear line breaks). "
+        "Include inline citations referencing the Document ID and Section."
+    )
+
     def __init__(
         self,
         model_name: str = "openai/gpt-oss-120b",
@@ -36,17 +46,24 @@ Do not use external knowledge."""
         load_dotenv()
         self.api_key = api_key or os.getenv("GROQ_API")
         self.model_name = model_name
-        self._client = None
+        self._llm = None
         self._logged_key_status = False
+        self.prompt = ChatPromptTemplate.from_messages(
+            [("system", self.SYSTEM_PROMPT), ("human", self.USER_PROMPT_TEMPLATE)]
+        )
+
+    def _make_llm(self, model_name: str) -> ChatGroq:
+        """Builds a ChatGroq model; temperature/top_p are supplied per call via bind()."""
+        return ChatGroq(model=model_name, api_key=(self.api_key or "").strip(), timeout=60.0)
 
     @property
-    def client(self) -> Optional[Groq]:
-        """Lazy loads and validates Groq client connection."""
-        if self._client is None:
+    def llm(self) -> Optional[ChatGroq]:
+        """Lazy loads and validates the Groq chat model (None when no valid key is configured)."""
+        if self._llm is None:
             raw_key = (self.api_key or "").strip()
             if raw_key and raw_key.startswith("gsk_"):
                 try:
-                    self._client = Groq(api_key=raw_key)
+                    self._llm = self._make_llm(self.model_name)
                     if not self._logged_key_status:
                         print("[GroqGenerator] [SUCCESS] GROQ_API successfully fetched.")
                         self._logged_key_status = True
@@ -54,13 +71,13 @@ Do not use external knowledge."""
                     if not self._logged_key_status:
                         print(f"[GroqGenerator] [WARNING] Failed to initialize Groq client: {e}. Returning fallback answer.")
                         self._logged_key_status = True
-                    self._client = None
+                    self._llm = None
             else:
                 if not self._logged_key_status:
                     print("[GroqGenerator] [WARNING] GROQ_API variable not found or invalid (placeholder key detected). Returning fallback answer.")
                     self._logged_key_status = True
-                self._client = None
-        return self._client
+                self._llm = None
+        return self._llm
 
     def _format_context(self, retrieved_chunks: List[Dict[str, Any]]) -> str:
         """Formats retrieved chunk dictionaries into formatted prompt context blocks."""
@@ -129,12 +146,24 @@ Do not use external knowledge."""
             "Please configure a valid GROQ_API in your .env file to enable LLM answer generation."
         )
 
+    def _invoke_chain(
+        self,
+        llm: ChatGroq,
+        context: str,
+        query: str,
+        temperature: float,
+        top_p: float,
+    ) -> str:
+        """Runs prompt -> ChatGroq -> parser. bind() sends temperature as given (ChatGroq's own field would turn 0.0 into 1e-08)."""
+        chain = self.prompt | llm.bind(temperature=temperature, top_p=top_p) | StrOutputParser()
+        return chain.invoke({"context": context, "question": query}).strip()
+
     def generate_answer(
         self,
         query: str,
         retrieved_chunks: List[Dict[str, Any]],
         temperature: float = 0.0,
-        top_p: float = 1.0,
+        top_p: float = 0.1,
     ) -> Dict[str, Any]:
         """Synthesizes answer via Groq LLM using strict context instructions."""
         sources = self._build_sources_metadata(retrieved_chunks)
@@ -145,26 +174,12 @@ Do not use external knowledge."""
                 "sources": [],
             }
 
-        if self.client is not None:
+        if self.llm is not None:
             formatted_context = self._format_context(retrieved_chunks)
-            user_prompt = (
-                f"RETRIEVED CONTEXT:\n{formatted_context}\n\n"
-                f"USER QUESTION:\n{query}\n\n"
-                f"INSTRUCTIONS:\nProvide your final compliance audit answer strictly based on the context above. "
-                f"Format your answer cleanly using Markdown (bold headings, bullet points, clear line breaks). "
-                f"Include inline citations referencing the Document ID and Section."
-            )
             try:
-                response = self.client.chat.completions.create(
-                    model=self.model_name,
-                    messages=[
-                        {"role": "system", "content": self.SYSTEM_PROMPT},
-                        {"role": "user", "content": user_prompt},
-                    ],
-                    temperature=temperature,
-                    top_p=top_p,
+                final_answer = self._invoke_chain(
+                    self.llm, formatted_context, query, temperature, top_p
                 )
-                final_answer = response.choices[0].message.content.strip()
                 return {
                     "answer": final_answer,
                     "sources": sources,
@@ -179,16 +194,13 @@ Do not use external knowledge."""
                         if alt_model != self.model_name:
                             try:
                                 print(f"[GroqGenerator] Retrying with alternative model: {alt_model}...")
-                                response = self.client.chat.completions.create(
-                                    model=alt_model,
-                                    messages=[
-                                        {"role": "system", "content": self.SYSTEM_PROMPT},
-                                        {"role": "user", "content": user_prompt},
-                                    ],
-                                    temperature=temperature,
-                                    top_p=top_p,
+                                final_answer = self._invoke_chain(
+                                    self._make_llm(alt_model),
+                                    formatted_context,
+                                    query,
+                                    temperature,
+                                    top_p,
                                 )
-                                final_answer = response.choices[0].message.content.strip()
                                 return {
                                     "answer": final_answer,
                                     "sources": sources,

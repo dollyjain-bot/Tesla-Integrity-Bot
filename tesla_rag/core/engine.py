@@ -5,7 +5,10 @@ Orchestrates document loading, text chunking, embedding generation, vector stora
 
 from pathlib import Path
 from typing import List, Dict, Any, Optional
+from langchain_core.documents import Document
+from langchain_core.runnables import RunnableLambda, RunnablePassthrough
 from config import RAGConfig
+from core.retriever import ThresholdRetriever, document_to_chunk
 from ingestion.loaders import DocumentLoader
 from ingestion.chunker import TextChunker
 from models.embeddings import EmbeddingManager
@@ -47,12 +50,18 @@ class RAGEngine:
         self.embedding_manager = EmbeddingManager(model_name=emb_model)
         self.generator = GroqGenerator(model_name=model_llm)
         self._vector_store = None
+        # LangChain chain: query -> retriever (Top-K + threshold) -> Documents -> generate (prompt | Groq LLM)
+        self._rag_pipeline = (
+            RunnablePassthrough.assign(documents=RunnableLambda(self._retrieve_documents))
+            | RunnableLambda(self._generate)
+        )
 
     @property
     def vector_store(self) -> VectorStore:
         """Lazy loads ChromaDB VectorStore instance."""
         if self._vector_store is None:
             self._vector_store = VectorStore(
+                embedding_function=self.embedding_manager,
                 persist_directory=self.vector_dir,
                 collection_name=self.config.collection_name,
             )
@@ -84,54 +93,32 @@ class RAGEngine:
             return 0
 
         chunks = self.chunk_documents(docs, chunk_size=chunk_size, overlap=overlap)
-        chunk_texts = [c["chunk_text"] for c in chunks]
-        embeddings = self.embedding_manager.embed_documents(chunk_texts)
-        count = self.vector_store.add_chunks(chunks, embeddings)
+        count = self.vector_store.add_chunks(chunks)
         print(f"--- RAG ENGINE: INDEXING COMPLETED ({count} chunks indexed) ---")
         return count
 
-    def answer_query(
-        self,
-        query: str,
-        top_k: int = 3,
-        temperature: float = 0.0,
-        top_p: float = 1.0,
-        similarity_threshold: float = 0.35,
-        metadata_filter: Optional[Dict[str, Any]] = None,
-    ) -> Dict[str, Any]:
-        """
-        Executes the end-to-end RAG pipeline:
-        1. Embed user query string
-        2. Retrieve Top-K semantically similar chunks from ChromaDB
-        3. Filter chunks by similarity threshold
-        4. Generate grounded answer via Groq LLM
-        """
+    def _retrieve_documents(self, inputs: Dict[str, Any]) -> List[Document]:
+        """Pipeline steps 1-3: auto-index if empty, then Top-K retrieval from ChromaDB with the similarity threshold."""
         if self.vector_store.count() == 0:
             print("Vector store is empty. Automatically building index from data directory...")
             self.build_or_update_index()
 
-        # Step 1: Embed user query string
-        query_vector = self.embedding_manager.embed_query(query)
-
-        # Step 2: Query ChromaDB vector store
-        candidate_chunks = self.vector_store.query_similar_chunks(
-            query_embedding=query_vector,
-            top_k=top_k,
-            metadata_filter=metadata_filter,
+        retriever = ThresholdRetriever(
+            vector_store=self.vector_store,
+            top_k=inputs["top_k"],
+            similarity_threshold=inputs["similarity_threshold"],
+            metadata_filter=inputs["metadata_filter"],
         )
+        return retriever.invoke(inputs["query"])
 
-        # Step 3: Filter chunks by similarity score threshold
-        relevant_chunks = [
-            c for c in candidate_chunks
-            if c.get("similarity_score", 0.0) >= similarity_threshold
-        ]
-
-        # Step 4: Generate answer via Groq LLM
+    def _generate(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        """Pipeline step 4: generate the answer via the Groq LLM and assemble the response dictionary."""
+        relevant_chunks = [document_to_chunk(d) for d in state["documents"]]
         gen_result = self.generator.generate_answer(
-            query=query,
+            query=state["query"],
             retrieved_chunks=relevant_chunks,
-            temperature=temperature,
-            top_p=top_p,
+            temperature=state["temperature"],
+            top_p=state["top_p"],
         )
 
         metadata_list = [
@@ -153,3 +140,30 @@ class RAGEngine:
             "retrieved_chunks": relevant_chunks,
             "metadata": metadata_list,
         }
+
+    def answer_query(
+        self,
+        query: str,
+        top_k: int = 3,
+        temperature: float = 0.0,
+        top_p: float = 0.1,
+        similarity_threshold: float = 0.35,
+        metadata_filter: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Executes the end-to-end RAG pipeline:
+        1. Embed user query string
+        2. Retrieve Top-K semantically similar chunks from ChromaDB
+        3. Filter chunks by similarity threshold
+        4. Generate grounded answer via Groq LLM
+        """
+        return self._rag_pipeline.invoke(
+            {
+                "query": query,
+                "top_k": top_k,
+                "temperature": temperature,
+                "top_p": top_p,
+                "similarity_threshold": similarity_threshold,
+                "metadata_filter": metadata_filter,
+            }
+        )
